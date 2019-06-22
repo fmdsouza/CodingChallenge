@@ -1,5 +1,5 @@
 #!flask/bin/python
-from flask import Flask, jsonify, make_response, abort
+from flask import Flask, jsonify, make_response, abort, request
 
 
 app = Flask(__name__)
@@ -20,6 +20,20 @@ resources = [
         'address': u'173 Main St., Springfield RI 55924'
     }
 ]
+
+@app.route('/api/v1.0/resources', methods=['POST'])
+def create_resource():
+    if not request.json or not 'name' in request.json:
+        abort(400)
+    resource = {
+        'id': resources[-1]['id'] + 1,
+        'name': request.json['name'],
+        'email': request.json.get('email', ""),
+        'phone': request.json.get('phone', ""),
+        'address': request.json.get('address', "")
+    }
+    resources.append(resource)
+    return jsonify({'resource': resource}), 201
 
 @app.errorhandler(404)
 def not_found(error):
