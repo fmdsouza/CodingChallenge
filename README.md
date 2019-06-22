@@ -35,3 +35,6 @@ using curl ---> curl -i http://localhost:5000/api/v1.0/resources
 2. To fetch a particular record based on the record id:
 using browser ---> http://localhost:5000/api/v1.0/resources/1
 using curl ---> curl -i http://localhost:5000/api/v1.0/resources/1
+
+Example for POST method:
+using curl --> curl -i -H "Content-Type: application/json" -X POST -d '{"name": "Eric Williams", "phone":"560-555-5153", "address": "806 1st St., Faketown AK 86847", "email":"laurawilliams@bogusemail.com"}' http://localhost:5000/api/v1.0/resources
