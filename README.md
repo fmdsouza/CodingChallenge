@@ -19,3 +19,19 @@ $pip.exe install flask
 Write a sample application to test if everything works fine.
 $ python.exe ../sample_app.py
 
+Examples for GET requests:
+
+The main code will be executed using the below command:
+$python configure_object_store.py
+
+With this the server will be running and it displays the ip address and the port on which the service will be running.
+
+To access the service, below are the links which are exposed:
+
+1. To fetch all the records: 
+using browser ---> http://localhost:5000/api/v1.0/resources
+using curl ---> curl -i http://localhost:5000/api/v1.0/resources
+
+2. To fetch a particular record based on the record id:
+using browser ---> http://localhost:5000/api/v1.0/resources/1
+using curl ---> curl -i http://localhost:5000/api/v1.0/resources/1
