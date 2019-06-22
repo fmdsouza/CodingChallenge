@@ -21,6 +21,35 @@ resources = [
     }
 ]
 
+@app.route('/api/v1.0/resources/<int:resource_id>', methods=['PUT'])
+def update_resource(resource_id):
+    resource = [resource for resource in resources if resource['id'] == resource_id]
+    if len(resource) == 0:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if 'name' in request.json and type(request.json['name']) != unicode:
+        abort(400)
+    if 'address' in request.json and type(request.json['address']) is not unicode:
+        abort(400)
+    if 'email' in request.json and type(request.json['email']) is not unicode:
+        abort(400)
+    if 'phone' in request.json and type(request.json['phone']) is not unicode:
+        abort(400)
+    resource[0]['name'] = request.json.get('name', resource[0]['name'])
+    resource[0]['address'] = request.json.get('address', resource[0]['address'])
+    resource[0]['email'] = request.json.get('email', resource[0]['email'])
+    resource[0]['phone'] = request.json.get('phone', resource[0]['phone'])
+    return jsonify({'resource': resource[0]})
+
+@app.route('/api/v1.0/resources/<int:resource_id>', methods=['DELETE'])
+def delete_resource(resource_id):
+    resource = [resource for resource in resources if resource['id'] == resource_id]
+    if len(resource) == 0:
+        abort(404)
+    resources.remove(resource[0])
+    return jsonify({'result': True})
+
 @app.route('/api/v1.0/resources', methods=['POST'])
 def create_resource():
     if not request.json or not 'name' in request.json:
