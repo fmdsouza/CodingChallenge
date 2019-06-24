@@ -10,6 +10,63 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
+@app.route('/api/v2.0/resources/delete/<int:resource_id>', methods=['DELETE'])
+def delete_resource(resource_id):
+    try:
+        conn = pymysql.connect("localhost", "root", "Arthur_123", "TestDB")
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM resources WHERE id=%s", (resource_id))
+        conn.commit()
+        resp = jsonify('User deleted successfully!')
+        resp.status_code = 200
+        return resp
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
+@app.route('/api/v2.0/resources/put/<int:resource_id>', methods=['PUT'])
+def update_resource(resource_id):
+    try:
+        conn = pymysql.connect("localhost", "root", "Arthur_123", "TestDB")
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM resources WHERE id=%s", resource_id)
+        row = cursor.fetchone()
+        
+        if not request.json:
+            abort(400)
+        if 'name' in request.json and type(request.json['name']) != unicode:
+            abort(400)
+        if 'address' in request.json and type(request.json['address']) is not unicode:
+            abort(400)
+        if 'email' in request.json and type(request.json['email']) is not unicode:
+            abort(400)
+        if 'phone' in request.json and type(request.json['phone']) is not unicode:
+            abort(400)
+
+        name = request.json.get('name', row['name'])
+        address = request.json.get('address', row['address'])
+        email = request.json.get('email', row['email'])
+        phone = request.json.get('phone', row['phone'])
+
+        # save edits
+        sql = "UPDATE resources SET name=%s, email=%s, address=%s, phone=%s WHERE id=%s"
+        data = (name, email, address, phone, resource_id)
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        resp = jsonify('User updated successfully!')
+        resp.status_code = 200
+        return resp
+        #else:
+        #return not_found()
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
 @app.route('/api/v2.0/resources/post', methods=['POST'])
 def create_resource():
     try:
