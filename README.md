@@ -29,18 +29,18 @@ With this the server will be running and it displays the ip address and the port
 To access the service, below are the links which are exposed:
 
 1. To fetch all the records: 
-using browser ---> http://localhost:5000/api/v1.0/resources
-using curl ---> curl -i http://localhost:5000/api/v1.0/resources
+using browser ---> http://localhost:5000/api/v1.0/resources/get
+using curl ---> curl -i http://localhost:5000/api/v1.0/resources/get
 
 2. To fetch a particular record based on the record id:
-using browser ---> http://localhost:5000/api/v1.0/resources/1
-using curl ---> curl -i http://localhost:5000/api/v1.0/resources/1
+using browser ---> http://localhost:5000/api/v1.0/resources/get/1
+using curl ---> curl -i http://localhost:5000/api/v1.0/resources/get/1
 
 Example for POST method:
-using curl --> curl -i -H "Content-Type: application/json" -X POST -d '{"name": "Eric Williams", "phone":"560-555-5153", "address": "806 1st St., Faketown AK 86847", "email":"laurawilliams@bogusemail.com"}' http://localhost:5000/api/v1.0/resources
+using curl --> curl -i -H "Content-Type: application/json" -X POST -d '{"name": "Eric Williams", "phone":"560-555-5153", "address": "806 1st St., Faketown AK 86847", "email":"laurawilliams@bogusemail.com"}' http://localhost:5000/api/v1.0/resources/post
 
 Example for PUT method:
-curl -i -H "Content-Type: application/json" -X PUT -d '{"email":"abc.def@gmail.com"}' http://localhost:5000/api/v1.0/resources/3
+curl -i -H "Content-Type: application/json" -X PUT -d '{"email":"abc.def@gmail.com"}' http://localhost:5000/api/v1.0/resources/put/3
 
 Example for DELETE method:
-curl -i -H "Content-Type: application/json" -X DELETE http://localhost:5000/api/v1.0/resources/3
+curl -i -H "Content-Type: application/json" -X DELETE http://localhost:5000/api/v1.0/resources/delete/3
