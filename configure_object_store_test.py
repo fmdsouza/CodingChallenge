@@ -47,7 +47,25 @@ class RestApiTest(unittest.TestCase):
             data = json.loads(res.get_data(as_text=True))
             self.assertEqual(data['resource'], self.sample_records[0])
             
-            
+    def test_update_resource(self):
+        input_json = {"email":"abc.def@gmail.com"}
+        response = app.test_client().put('/api/v1.0/resources/put/3',
+        data=json.dumps(input_json),
+        content_type='application/json',)
+
+        data = json.loads(response.get_data(as_text=True))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['resource']['email'], input_json['email'])      
+
+    def test_update_resource_negative(self):
+        input_json = {"email":"abc.def@gmail.com"}
+        response = app.test_client().put('/api/v1.0/resources/put/6',
+        data=json.dumps(input_json),
+        content_type='application/json',)
+
+        data = json.loads(response.get_data(as_text=True))
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(data, {"error": "Not found"})        
 
 if __name__ == "__main__":
     unittest.main()
