@@ -21,7 +21,7 @@ resources = [
     }
 ]
 
-@app.route('/api/v1.0/resources/<int:resource_id>', methods=['PUT'])
+@app.route('/api/v1.0/resources/put/<int:resource_id>', methods=['PUT'])
 def update_resource(resource_id):
     resource = [resource for resource in resources if resource['id'] == resource_id]
     if len(resource) == 0:
@@ -42,7 +42,7 @@ def update_resource(resource_id):
     resource[0]['phone'] = request.json.get('phone', resource[0]['phone'])
     return jsonify({'resource': resource[0]})
 
-@app.route('/api/v1.0/resources/<int:resource_id>', methods=['DELETE'])
+@app.route('/api/v1.0/resources/delete/<int:resource_id>', methods=['DELETE'])
 def delete_resource(resource_id):
     resource = [resource for resource in resources if resource['id'] == resource_id]
     if len(resource) == 0:
@@ -50,7 +50,7 @@ def delete_resource(resource_id):
     resources.remove(resource[0])
     return jsonify({'result': True})
 
-@app.route('/api/v1.0/resources', methods=['POST'])
+@app.route('/api/v1.0/resources/post', methods=['POST'])
 def create_resource():
     if not request.json or not 'name' in request.json:
         abort(400)
@@ -68,14 +68,14 @@ def create_resource():
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
-@app.route('/api/v1.0/resources/<int:resource_id>', methods=['GET'])
+@app.route('/api/v1.0/resources/get/<int:resource_id>', methods=['GET'])
 def get_resource(resource_id):
     resource = [resource for resource in resources if resource['id'] == resource_id]
     if len(resource) == 0:
         abort(404)
     return jsonify({'resource': resource[0]})
 
-@app.route('/api/v1.0/resources', methods=['GET'])
+@app.route('/api/v1.0/resources/get', methods=['GET'])
 def get_resources():
     return jsonify({'resources': resources})
 
