@@ -1,0 +1,132 @@
+Developing a simple REST API with static data:
+
+Added a simple sample_app.py file just to check if flask instrallation is proper and able to make a REST call.
+
+Pre-requisites: 
+Python should be already installed. Perform the following steps in the folder where you want to save your changes.
+
+$ mkdir REST_api 
+$ cd REST_api 
+$ virtualenv flask 
+New python executable in flask/bin/python 
+Installing setuptools............................done. 
+Installing pip...................done.
+
+$ cd flask/Scripts 
+$pip.exe install flask
+
+Write a sample application to test if everything works fine. 
+$ python.exe ../sample_app.py
+
+Examples for GET requests:
+
+The main code will be executed using the below command: 
+$python configure_object_store.py
+
+With this the server will be running and it displays the ip address and the port on which the service will be running.
+
+To access the service, below are the links which are exposed:
+
+1. To fetch all the records: 
+using browser ---> http://localhost:5000/api/v1.0/resources/get 
+using curl ---> curl -i http://localhost:5000/api/v1.0/resources/get
+
+2. To fetch a particular record based on the record id: 
+using browser ---> http://localhost:5000/api/v1.0/resources/get/1 
+using curl ---> curl -i http://localhost:5000/api/v1.0/resources/get/1
+
+3. Example for POST method: 
+using curl --> curl -i -H "Content-Type: application/json" -X POST -d '{"name": "Eric Williams", "phone":"560-555-5153", "address": "806 1st St., Faketown AK 86847", "email":"laurawilliams@bogusemail.com"}' http://localhost:5000/api/v1.0/resources/post
+
+4. Example for PUT method: 
+curl -i -H "Content-Type: application/json" -X PUT -d '{"email":"abc.def@gmail.com"}' http://localhost:5000/api/v1.0/resources/put/3
+
+5. Example for DELETE method: 
+curl -i -H "Content-Type: application/json" -X DELETE http://localhost:5000/api/v1.0/resources/delete/3
+
+
+Developing a simple REST API with db:
+1. install mysql server:
+[root@k8s-dev2 ~]# rpm -Uvh /tmp/mysql57-community-release-el7-11.noarch.rpm
+warning: /tmp/mysql57-community-release-el7-11.noarch.rpm: Header V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:mysql57-community-release-el7-11 ################################# [100%]
+   
+ 2. yum install mysql-community-server
+ 3. start mysql service:
+ [root@k8s-dev2 ~]# service mysqld start
+Redirecting to /bin/systemctl start mysqld.service
+4. find out the temporary password to change it to a new password:
+[root@k8s-dev2 ~]# grep 'temporary password' /var/log/mysqld.log
+2019-06-23T12:52:22.072703Z 1 [Note] A temporary password is generated for root@localhost: N4?typMrT<ge
+[root@k8s-dev2 ~]#
+
+5. create a new password using the below command and continue the process:
+[root@k8s-dev2 ~]# mysql_secure_installation
+
+6. login to mysql using the below command:
+[root@k8s-dev2 ~]# mysql -h localhost -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.7.26 MySQL Community Server (GPL)
+
+7. create a DB:
+mysql> CREATE DATABASE TestDB;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| TestDB             |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+
+8. create a table for our purpose:
+mysql> use TestDB;
+Database changed
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> CREATE TABLE resources
+    -> (
+    ->   id              INT unsigned NOT NULL AUTO_INCREMENT, # Unique ID for the record
+    ->   name            VARCHAR(150) NOT NULL,                # Name of the person
+    ->   email           VARCHAR(150) NOT NULL,                # email of the person
+    ->   address         VARCHAR(150) NOT NULL,                # address of the person
+    ->   phone           VARCHAR(150) NOT NULL,                # phone number of the person
+    ->   PRIMARY KEY     (id)                                  # Make the id the primary key
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> show tables;                                                                                                                                      
+| Tables_in_TestDB |
++------------------+
+| resources        |
++------------------+
+1 row in set (0.01 sec)
+
+9. create a folder where you want to execute your scripts:
+$mkdir /root/myproject/; cd /root/myproject/
+
+10. install virtual environment, install pip if not installed:
+$pip install virtualenv
+
+11. activate the vurtualenv:
+. venv/bin/activate
+
+12. install pymysql to connect to mysql db from python script.
+$pip install pymysql
+
+13. install flask
+$pip install flask
+
+14. Copy the scripts from the GitHub and execute the below scripts:
+configure_object_store.py		--> for static data
+configure_object_store_db.py	--> for db
